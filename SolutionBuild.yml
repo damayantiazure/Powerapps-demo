@@ -15,15 +15,13 @@ parameters:
   displayName: Build Environment
   type: string
   default: 'Power-Platform-Test-Connection'
-- name: EnvName
-  displayName: Build Environment
-  type: string
-  default: 'Power-Platform-Test-Connection'
+
 trigger: none
 
 variables:
   SolutionName: ${{ parameters.SolutionName }}
-  BuildEnvSvcConn: ${{ parameters.EnvName }}
+  BuildDevEnvName: ${{ parameters.BuildDevEnvName }}
+  BuildTestEnvName: ${{ parameters.BuildTestEnvName }}
 
 jobs:
 - job: build
