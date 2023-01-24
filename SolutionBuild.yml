@@ -7,11 +7,14 @@ parameters:
   displayName: Build Managed Solution?
   type: boolean
   default: true
-- name: BuildEnvName
+- name: BuildDevEnvName
   displayName: Build Environment
   type: string
   default: 'Power-platform-Dev-Connection'
-
+- name: BuildTestEnvName
+  displayName: Build Environment
+  type: string
+  default: 'Power-Platform-Test-Connection'
 trigger: none
 
 variables:
@@ -52,20 +55,20 @@ jobs:
     displayName: 'Power Platform Import Solution '
     inputs:
       authenticationType: PowerPlatformSPN
-      PowerPlatformSPN: $(BuildEnvSvcConn)
+      PowerPlatformSPN: $(BuildTestEnvName)
       SolutionInputFile: '$(Build.BinariesDirectory)/$(SolutionName).zip '
 
   - task: PowerPlatformPublishCustomizations@0
     displayName: 'Power Platform Publish Customizations '
     inputs:
       authenticationType: PowerPlatformSPN
-      PowerPlatformSPN: $(BuildEnvSvcConn)
+      PowerPlatformSPN: $(BuildTestEnvName)
 
   - task: PowerPlatformExportSolution@0
     displayName: 'Power Platform Export Solution '
     inputs:
       authenticationType: PowerPlatformSPN
-      PowerPlatformSPN: $(BuildEnvSvcConn)
+      PowerPlatformSPN: $(BuildTestEnvName)
       SolutionName: $(SolutionName)
       SolutionOutputFile: '$(Build.ArtifactStagingDirectory)/$(SolutionName).zip '
       Managed: ${{ parameters.Managed }}
