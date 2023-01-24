@@ -29,13 +29,13 @@ jobs:
 
   - pwsh: |
       $solutionName = "$(SolutionName)"
-      $exportBranchName = "master"
+      $exportBranchName = "$(exportBranchName)"
       cd $(Build.SourcesDirectory)
       git config user.email "dbhuyan@microsoft.com"
       git config user.name "Damayanti Bhuyan"
       git checkout $(Build.SourceBranchName)
       git checkout -b $exportBranchName
-      git -c http.extraheader="AUTHORIZATION: bearer $MY_ACCESS_TOKEN" push --set-upstream origin $exportBranchName
+      git -c http.extraheader="AUTHORIZATION: bearer $env:MY_ACCESS_TOKEN" push --set-upstream origin $exportBranchName
     env:
       MY_ACCESS_TOKEN: $(System.AccessToken)
       
