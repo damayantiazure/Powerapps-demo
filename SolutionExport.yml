@@ -55,12 +55,21 @@ jobs:
     inputs:
       SolutionInputFile: $(Build.BinariesDirectory)/$(SolutionName).zip
       SolutionTargetFolder: $(Build.SourcesDirectory)/$(SolutionName)
+  - powershell: |
+    $url = "$($env:SYSTEM_TEAMFOUNDATIONCOLLECTIONURI)$env:SYSTEM_TEAMPROJECTID/_apis/build/definitions/$($env:SYSTEM_DEFINITIONID)?api-version=4.1-preview"
+    Write-Host "URL: $url"
+    $pipeline = Invoke-RestMethod -Uri $url -Headers @{
+      Authorization = "Bearer $env:SYSTEM_ACCESSTOKEN"
+    }
+    Write-Host "Pipeline = $($pipeline | ConvertTo-Json -Depth 100)"
+  env:
+    SYSTEM_ACCESSTOKEN: $(system.accesstoken)    
 
   - pwsh: |
       cd $(Build.SourcesDirectory)
       git add --all
       git commit -m "$(SolutionName)-$(Build.BuildId)"
-      git -c http.extraheader="AUTHORIZATION: bearer $(MY_ACCESS_TOKEN)" push
+      # git -c http.extraheader="AUTHORIZATION: bearer $env:SYSTEM_ACCESSTOKEN" push
     env:
       MY_ACCESS_TOKEN: $(System.AccessToken)
   # https://marketplace.visualstudio.com/items?itemName=sander-aernouts.git-buildtasks  
