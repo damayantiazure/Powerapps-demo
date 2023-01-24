@@ -1,0 +1,73 @@
+parameters:
+- name: SolutionName
+  displayName: Solution Name
+  type: string
+  default: 'Sample Solution'
+- name: EnvName
+  displayName: Source Environment
+  type: string
+  default: 'Development'
+
+trigger: none
+
+# Title case variables denote mapping to a parameter
+variables:
+  SolutionName: ${{ parameters.SolutionName }}
+  SourceEnvSvcConn: ${{ parameters.EnvName }}
+  exportBranchName: 'export-$(SolutionName)-$(Build.BuildId)'
+
+jobs:
+- job: exportSolution
+  displayName: Export Solution
+
+  pool:
+    vmImage: windows-2019
+
+  steps:
+  - checkout: self
+    persistCredentials: True
+
+  - pwsh: |
+      $solutionName = "$(SolutionName)"
+      $exportBranchName = "$(exportBranchName)"
+      cd $(Build.SourcesDirectory)
+      git config user.email "dbhuyan@microsoft.com"
+      git config user.name "Damayanti Bhuyan"
+      git checkout $(Build.SourceBranchName)
+      git checkout -b $exportBranchName
+      git -c http.extraheader="AUTHORIZATION: bearer $env:MY_ACCESS_TOKEN" push --set-upstream origin $exportBranchName
+    env:
+      MY_ACCESS_TOKEN: $(System.AccessToken)
+  - task: PowerPlatformToolInstaller@0
+    displayName: 'Power Platform Tool Installer'
+
+  - task: PowerPlatformExportSolution@0
+    displayName: 'Power Platform Export Solution'
+    inputs:
+      authenticationType: PowerPlatformSPN
+      PowerPlatformSPN: $(SourceEnvSvcConn)
+      SolutionName: $(SolutionName)
+      SolutionOutputFile: $(Build.BinariesDirectory)/$(SolutionName).zip
+
+  - task: PowerPlatformUnpackSolution@0
+    displayName: 'Power Platform Unpack Solution'
+    inputs:
+      SolutionInputFile: $(Build.BinariesDirectory)/$(SolutionName).zip
+      SolutionTargetFolder: $(Build.SourcesDirectory)/$(SolutionName)
+
+  - pwsh: |
+      cd $(Build.SourcesDirectory)
+      git add --all
+      git commit -m "$(SolutionName)-$(Build.BuildId)"
+      git -c http.extraheader="AUTHORIZATION: bearer $env:MY_ACCESS_TOKEN" push
+    env:
+      MY_ACCESS_TOKEN: $(System.AccessToken)
+  # https://marketplace.visualstudio.com/items?itemName=sander-aernouts.git-buildtasks  
+  - task: GitCreatePullRequest@0
+    displayName: Create PR for $(exportBranchName) branch
+    inputs:
+      repositorySelectionMethod: 'currentBuild'
+      sourceBranch: refs/heads/$(exportBranchName)
+      targetBranch: $(Build.SourceBranch)
+      autoComplete: false
+      deleteSourceBranch: true
