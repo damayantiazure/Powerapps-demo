@@ -19,8 +19,7 @@ trigger: none
 
 variables:
   SolutionName: ${{ parameters.SolutionName }}
-  BuildDevEnvSvcConn: ${{ parameters.BuildDevEnvName }}
-  BuildTestEnvSvcConn: ${{ parameters.BuildTestEnvName }}
+  BuildEnvSvcConn: ${{ parameters.EnvName }}
 
 jobs:
 - job: build
