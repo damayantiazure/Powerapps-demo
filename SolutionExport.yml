@@ -6,7 +6,7 @@ parameters:
 - name: EnvName
   displayName: Source Environment
   type: string
-  default: 'Development'
+  default: 'Power-platform-Dev-Connection'
 
 trigger: none
 
