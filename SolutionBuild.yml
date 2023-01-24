@@ -2,7 +2,7 @@ parameters:
 - name: SolutionName
   displayName: Solution Name
   type: string
-  default: 'ConferenceApp'
+  default: 'SampleSolution'
 - name: Managed
   displayName: Build Managed Solution?
   type: boolean
@@ -10,7 +10,7 @@ parameters:
 - name: BuildEnvName
   displayName: Build Environment
   type: string
-  default: 'toentdevops-build'
+  default: 'Power-platform-Dev-Connection'
 
 trigger: none
 
