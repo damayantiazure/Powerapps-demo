@@ -69,6 +69,7 @@ jobs:
       cd $(Build.SourcesDirectory)
       git config user.email "dbhuyan@microsoft.com"
       git config user.name "Damayanti Bhuyan"
+      git checkout main
       git add --all
       git commit -m "$(SolutionName)-$(Build.BuildId)"
       git -c http.extraheader="AUTHORIZATION: bearer $env:SYSTEM_ACCESSTOKEN" push
