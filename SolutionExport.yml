@@ -71,7 +71,7 @@ jobs:
       git config user.name "Damayanti Bhuyan"
       git add --all
       git commit -m "$(SolutionName)-$(Build.BuildId)"
-      # git -c http.extraheader="AUTHORIZATION: bearer $env:SYSTEM_ACCESSTOKEN" push
+      git -c http.extraheader="AUTHORIZATION: bearer $env:SYSTEM_ACCESSTOKEN" push
     env:
       MY_ACCESS_TOKEN: $(System.AccessToken)
   # https://marketplace.visualstudio.com/items?itemName=sander-aernouts.git-buildtasks  
