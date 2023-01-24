@@ -63,11 +63,11 @@ jobs:
     env:
       MY_ACCESS_TOKEN: $(System.AccessToken)
   # https://marketplace.visualstudio.com/items?itemName=sander-aernouts.git-buildtasks  
-  - task: GitCreatePullRequest@0
-    displayName: Create PR for $(exportBranchName) branch
-    inputs:
-      repositorySelectionMethod: 'currentBuild'
-      sourceBranch: refs/heads/$(exportBranchName)
-      targetBranch: $(Build.SourceBranch)
-      autoComplete: false
-      deleteSourceBranch: true
+#   - task: GitCreatePullRequest@0
+#     displayName: Create PR for $(exportBranchName) branch
+#     inputs:
+#       repositorySelectionMethod: 'currentBuild'
+#       sourceBranch: refs/heads/$(exportBranchName)
+#       targetBranch: $(Build.SourceBranch)
+#       autoComplete: false
+#       deleteSourceBranch: true
