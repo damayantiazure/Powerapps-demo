@@ -2,7 +2,7 @@ parameters:
 - name: SolutionName
   displayName: Solution Name
   type: string
-  default: 'Sample Solution'
+  default: 'SampleSolution'
 - name: EnvName
   displayName: Source Environment
   type: string
