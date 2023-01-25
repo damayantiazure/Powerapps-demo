@@ -73,7 +73,10 @@ jobs:
       git config user.email "dbhuyan@microsoft.com"
       git config user.name "Damayanti Bhuyan"
       git checkout $(Build.SourceBranchName)
-      git checkout -b $exportBranchName
+    #   git checkout -b $exportBranchName
+      git remote update
+      git fetch
+      git checkout --track origin/main
       git add --all
       git commit -m "$(SolutionName)-$(Build.BuildId)"
       git -c http.extraheader="AUTHORIZATION: bearer $env:MY_ACCESS_TOKEN" push --set-upstream origin $exportBranchName
