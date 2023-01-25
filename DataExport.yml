@@ -2,14 +2,14 @@ parameters:
 - name: SolutionName
   displayName: Solution Name
   type: string
-  default: 'ConferenceApp'
+  default: 'SampleSolution'
 - name: EnvUrl
   displayName: Source Environment Url
   type: string
-  default: 'https://toentdevops-dev.crm3.dynamics.com/'
+  default: 'https://orgefd3a83c.crm4.dynamics.com'
 
 variables:
-  - group: toentdevops
+  - group: PowerApp-Variables
   - name: SolutionName
     value: ${{ parameters.SolutionName }}
   - name: DataExportEnvironmentUrl
@@ -70,8 +70,8 @@ jobs:
   - powershell: |
       $exportBranchName = "export-$(SolutionName)-$(Build.BuildId)"
       cd $(Build.SourcesDirectory)
-      git config user.email "export.pipeline@dev.azure.com"
-      git config user.name "Export Pipeline"
+      git config user.email "dbhuyan@microsoft.com"
+      git config user.name "Damayanti Bhuyan"
       git checkout $(Build.SourceBranchName)
       git checkout -b $exportBranchName
       git add --all
